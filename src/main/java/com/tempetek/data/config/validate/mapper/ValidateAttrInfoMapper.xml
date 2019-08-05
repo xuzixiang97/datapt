@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tempetek.data.config.validate.entity.ValidateAttrInfo">
+
+  <resultMap id="validateAttrInfoResultMap" type="com.tempetek.data.config.validate.entity.ValidateAttrInfo">
+  	 <result property="id" column="ID" />
+	 <result property="validateId" column="VALIDATE_ID" />
+	 <result property="validateName" column="VALIDATE_NAME" />
+	 <result property="validateType" column="VALIDATE_TYPE" />
+	 <result property="validateLength" column="VALIDATE_LENGTH"/>
+	 <result property="validateNullable" column="VALIDATE_NULLABLE" />
+	 <result property="validateValue" column="VALIDATE_VALUE" />
+	 <result property="validateComment" column="VALIDATE_COMMENT" />
+  </resultMap>
+  
+  <sql id="TABLE_NAME">US_DATA_VALIDATE_ATTR</sql>
+  
+  <sql id="PAGER_CONDITION">
+  	 <where>
+ 		<if test="condition.validateId!=null and condition.validateId!=''">
+   	    	AND VALIDATE_ID = #{condition.validateId, jdbcType = NUMERIC}
+    	</if>
+  
+  		<if test="condition.validateName!=null and condition.validateName!=''">
+   	    	AND VALIDATE_NAME = #{condition.validateName, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.validateType!=null and condition.validateType!=''">
+   	    	AND VALIDATE_TYPE = #{condition.validateType, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.validateNullable!=null and condition.validateNullable!=''">
+   	    	AND VALIDATE_NULLABLE = #{condition.validateNullable, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.validateValue!=null and condition.validateValue!=''">
+   	    	AND VALIDATE_VALUE = #{condition.validateValue, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.validateComment!=null and condition.validateComment!=''">
+   	    	AND VALIDATE_COMMENT = #{condition.validateComment, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.validateLength!=null and condition.validateLength!=''">
+   	    	AND VALIDATE_LENGTH = #{condition.validateLength, jdbcType = VARCHAR}
+    	</if>
+ 	 </where>
+  </sql>
+  
+  <sql id="SELECT_CONDITION">
+  	 <where>
+ 		<if test="validateId!=null and validateId!=''">
+   	    	AND VALIDATE_ID = #{validateId, jdbcType = NUMERIC}
+    	</if>
+  
+  		<if test="validateName!=null and validateName!=''">
+			<bind name="validateName" value="'%' + validateName + '%'"></bind>
+   	    	AND VALIDATE_NAME LIKE #{validateName, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="validateType!=null and validateType!=''">
+   	    	AND VALIDATE_TYPE = #{validateType, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="validateNullable!=null and validateNullable!=''">
+   	    	AND VALIDATE_NULLABLE = #{validateNullable, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="validateValue!=null and validateValue!=''">
+   	    	AND VALIDATE_VALUE = #{validateValue, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="validateComment!=null and validateComment!=''">
+   	    	AND VALIDATE_COMMENT = #{validateComment, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="validateLength!=null and validateLength!=''">
+   	    	AND VALIDATE_LENGTH = #{validateLength, jdbcType = VARCHAR}
+    	</if>
+   	 </where>
+  </sql>
+  
+  <sql id="INSERT_SQL">
+	 INSERT INTO <include refid="TABLE_NAME" />(
+	 	ID,
+		VALIDATE_ID,		
+		VALIDATE_NAME,
+		VALIDATE_TYPE,
+		VALIDATE_NULLABLE,
+		VALIDATE_VALUE,
+		VALIDATE_COMMENT,
+		VALIDATE_LENGTH
+	 )
+	 VALUES(
+	 	#{id, jdbcType = NUMERIC},
+		#{validateId, jdbcType = NUMERIC},		
+		#{validateName, jdbcType = VARCHAR},
+		#{validateType, jdbcType = VARCHAR},
+		#{validateNullable, jdbcType = VARCHAR},
+		#{validateValue, jdbcType = VARCHAR},
+		#{validateComment, jdbcType = VARCHAR},
+		#{validateLength, jdbcType = VARCHAR}
+	 )
+  </sql>
+  
+  <select id="findById" resultMap="validateAttrInfoResultMap" parameterType="java.lang.Long">
+     SELECT * FROM <include refid="TABLE_NAME" /> WHERE ID = #{id, jdbcType = NUMERIC}
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Long">
+  	 DELETE FROM <include refid="TABLE_NAME" /> WHERE ID = #{id, jdbcType = NUMERIC}
+  </delete>
+
+	<delete id="deleteByValidateId" parameterType="java.lang.Long">
+		DELETE FROM <include refid="TABLE_NAME" /> WHERE VALIDATE_ID = #{validateId, jdbcType = NUMERIC}
+	</delete>
+  
+  <insert id="insert" databaseId="oracle" parameterType="com.tempetek.data.config.validate.entity.ValidateAttrInfo">
+  	 <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+  	 	<include refid="_PUBLIC_V.SELECT_KEY" />
+	 </selectKey>
+	 <include refid="INSERT_SQL" />
+  </insert>
+  
+  <insert id="insert" databaseId="mysql" parameterType="com.tempetek.data.config.validate.entity.ValidateAttrInfo">
+  	 <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+  	 	<include refid="_PUBLIC_V.SELECT_KEY" />
+	 </selectKey>
+	 <include refid="INSERT_SQL" />
+  </insert>
+  
+  <insert id="insert" databaseId="sqlserver" parameterType="com.tempetek.data.config.validate.entity.ValidateAttrInfo">
+  	 <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+  	 	<include refid="_PUBLIC_V.SELECT_KEY" />
+	 </selectKey>
+	 <include refid="INSERT_SQL" />
+  </insert>
+  
+  <update id="update" parameterType="com.tempetek.data.config.validate.entity.ValidateAttrInfo">
+     UPDATE <include refid="TABLE_NAME" />
+	 <set>
+		VALIDATE_ID = #{validateId, jdbcType = NUMERIC},		
+		VALIDATE_NAME = #{validateName, jdbcType = VARCHAR},
+		VALIDATE_TYPE = #{validateType, jdbcType = VARCHAR},
+		VALIDATE_NULLABLE = #{validateNullable, jdbcType = VARCHAR},
+		VALIDATE_VALUE = #{validateValue, jdbcType = VARCHAR},
+		VALIDATE_COMMENT = #{validateComment, jdbcType = VARCHAR},
+		VALIDATE_LENGTH = #{validateLength, jdbcType = VARCHAR}
+	 </set>
+	 WHERE ID = #{id, jdbcType = NUMERIC}
+  </update>
+  
+  <select id="findByCondition" resultMap="validateAttrInfoResultMap" parameterType="com.tempetek.data.config.validate.entity.ValidateAttrInfo">
+     SELECT * FROM <include refid="TABLE_NAME" /> <include refid="SELECT_CONDITION" />
+  </select>
+  
+  <select id="selectPager" resultMap="validateAttrInfoResultMap">
+  	 <include refid="_PUBLIC_V.PAGER_BEFORE" />
+	 SELECT * FROM <include refid="TABLE_NAME" />
+  	 <include refid="PAGER_CONDITION" />
+  	 ORDER BY ${pageOrder}
+	 <include refid="_PUBLIC_V.PAGER_AFTER" />
+  </select>
+	
+  <select id="countPager" resultType="long">
+	 SELECT COUNT(1) FROM <include refid="TABLE_NAME" /> <include refid="PAGER_CONDITION" />
+  </select>
+  
+  <delete id="deleteByIds" parameterType="java.lang.Long">
+  	 DELETE FROM <include refid="TABLE_NAME" /> WHERE ID IN
+  	 <foreach item="item" collection="array" open="(" separator="," close=")">
+  	 	#{item}
+  	 </foreach>
+  </delete>
+  
+</mapper>

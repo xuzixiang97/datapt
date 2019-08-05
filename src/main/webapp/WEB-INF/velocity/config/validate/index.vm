@@ -1,0 +1,63 @@
+#parse("header.vm")
+</head>
+
+<body class="easyui-layout" data-options="fit:true">
+<div data-options="region:'center',border:false">
+    <form id="jspopForm" method="post" action="${rc.contextPath}/config/validate/save">
+        <input type="hidden" name="id" value="$!{validateInfo.id}">
+
+        <table style="width:100%">
+            <tr height="10px"></tr>
+
+            <tr height="40px">
+                <td align="right">
+                    <label class="textbox-label" style="text-align:right">名称:</label>
+                </td>
+                <td>
+                    <input class="easyui-textbox" name="name" value="$!{validateInfo.name}" style="" data-options="required:true,missingMessage:'名称不能为空!',validType:'length[0,32]',invalidMessage:'名称长度不能大于32!'" >
+                </td>
+            </tr>
+
+            <tr height="40px">
+                <td align="right">
+                    <label class="textbox-label" style="text-align:right">模板:</label>
+                </td>
+                <td>
+                    #combox_common('templateId', 'templateId', '2', $!{templateInfoList}, $!{validateInfo.templateId}, '', '模板不能为空!', '模板不正确!')
+                </td>
+            </tr>
+
+            <tr height="80px">
+                <td align="right">
+                    <label class="textbox-label" style="text-align:right">备注:</label>
+                </td>
+                <td colspan="3" style="padding-right:45px;">
+                    <input class="easyui-textbox easyui-layout" name="description" value="$!{validateInfo.description}" data-options="fit:true,multiline:true,validType:'length[0,256]',invalidMessage:'备注长度不能大于256!'" >
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+
+<script type="text/javascript">
+    function jspop_save() {
+        $("#jspopForm").form('submit', {
+            success: function(o) {
+                var data = jQuery.parseJSON(o);
+
+                if (data.status == "success") {
+                    $("input[name=id]").val(data.data);
+                    $.messager.alert('提示', data.message, 'info', function() {
+                        parent.location.reload();
+                        jspop_dialog_close("jspop_dialog");
+                    });
+                } else {
+                    $.messager.alert('提示', data.message, 'error');
+                }
+            }
+        });
+    }
+
+</script>
+</html>

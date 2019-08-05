@@ -1,0 +1,43 @@
+.platform-common {
+  width:100%;
+  height:100%;
+  background:#E0ECFF;
+  padding:0px;
+}
+
+.platform-color {
+  color:blue
+}
+
+.platform-head {
+	height:50px;
+	overflow:hidden;
+	background:#E0ECFF;
+}
+
+.platform-portrait{
+	border:1px solid #95B8E7;
+	width:150px;
+	height:150px;
+}
+
+.table-border, .table-border tr td{
+	border:1px solid #95B8E7;
+	border-collapse:collapse;
+	table-layout:fixed;
+	word-break:break-all;
+}
+
+.table-stripe tbody tr td:nth-of-type(odd){
+	padding-right:10px;
+}
+
+.table-stripe tbody tr td:nth-of-type(even){
+	padding-left:10px;
+}
+
+.panel-datagrid-toolbar, .panel-tree-toolbar{
+	background:#E0ECFF;
+	border-bottom-color:#95B8E7;
+	height:28px;
+}

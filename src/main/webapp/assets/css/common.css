@@ -1,0 +1,77 @@
+.system-head {
+	height:50px;
+	overflow:hidden;
+	background:#E0ECFF;
+}
+
+.table-border, .table-border tr td{
+	border:1px solid #e6e6e6;
+	border-collapse:collapse;
+	table-layout:fixed;
+	word-break:break-all;
+}
+
+.table-stripe tbody tr td:nth-of-type(odd){
+	background:#f7f7f7;
+	padding-right:10px;
+}
+
+.table-stripe tbody tr td:nth-of-type(even){
+	padding-left:10px;
+}
+
+.table-header tr:nth-of-type(odd){
+    background:#f6f7f8;
+}
+
+.panel-datagrid-header{
+    background:#E0ECFF;
+    border-color:#95B8E7;
+    height:28px;
+}
+
+.datagrid-toolbar {
+    border-width: 0 0 1px 0;
+    border-style: solid;
+}
+
+.datagrid-toolbar1 {
+    border-width: 1px 0 1px 0;
+    border-style: solid;
+}
+
+.panel-header-title{
+    background:#ffffff;
+    border:0;
+    padding:10px 0px;
+}
+
+.panel-header-title ul{
+    color:#4792ff;
+    margin:0px
+}
+
+.panel-header-title ul li span{
+    color:#000000
+}
+
+.datagrid-body .datagrid-editable {
+    margin:0px 4px;
+    padding:0
+}
+
+.render-shade {
+    padding: 1px 10px;
+    text-decoration: none;
+    display: inline-block;
+    border-width:1px;
+    border-style:solid; 
+}
+
+.button-detail {
+    border:solid orange 1px;
+    display:inline-block;
+    width:40px;
+    color:orange;
+    text-decoration:none;
+}

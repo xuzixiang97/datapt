@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tempetek.data.config.template.entity.TemplateAttrInfo">
+
+  <resultMap id="templateAttrInfoResultMap" type="com.tempetek.data.config.template.entity.TemplateAttrInfo">
+  	 <result property="id" column="ID" />
+	 <result property="templateId" column="TEMPLATE_ID" />
+	 <result property="fieldName" column="FIELD_NAME" />
+	 <result property="fieldComment" column="FIELD_COMMENT" />
+  </resultMap>
+  
+  <sql id="TABLE_NAME">US_DATA_TEMPLATE_ATTR</sql>
+  
+  <sql id="PAGER_CONDITION">
+  	 <where>
+ 		<if test="condition.templateId!=null and condition.templateId!=''">
+   	    	AND TEMPLATE_ID = #{condition.templateId, jdbcType = NUMERIC}
+    	</if>
+  
+  		<if test="condition.fieldName!=null and condition.fieldName!=''">
+   	    	AND FIELD_NAME = #{condition.fieldName, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.fieldComment!=null and condition.fieldComment!=''">
+   	    	AND FIELD_COMMENT = #{condition.fieldComment, jdbcType = VARCHAR}
+    	</if>
+ 	 </where>
+  </sql>
+  
+  <sql id="SELECT_CONDITION">
+  	 <where>
+ 		<if test="templateId!=null and templateId!=''">
+   	    	AND TEMPLATE_ID = #{templateId, jdbcType = NUMERIC}
+    	</if>
+
+  		<if test="fieldName!=null and fieldName!=''">
+			<bind name="fieldName" value="'%' + fieldName + '%'"></bind>
+   	    	AND FIELD_NAME LIKE #{fieldName, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="fieldComment!=null and fieldComment!=''">
+   	    	AND FIELD_COMMENT = #{fieldComment, jdbcType = VARCHAR}
+    	</if>
+   	 </where>
+  </sql>
+  
+  <sql id="INSERT_SQL">
+	 INSERT INTO <include refid="TABLE_NAME" />(
+	 	ID,
+		TEMPLATE_ID,		
+		FIELD_NAME,		
+		FIELD_COMMENT		
+	 )
+	 VALUES(
+	 	#{id, jdbcType = NUMERIC},
+		#{templateId, jdbcType = NUMERIC},		
+		#{fieldName, jdbcType = VARCHAR},		
+		#{fieldComment, jdbcType = VARCHAR}		
+	 )
+  </sql>
+  
+  <select id="findById" resultMap="templateAttrInfoResultMap" parameterType="java.lang.Long">
+     SELECT * FROM <include refid="TABLE_NAME" /> WHERE ID = #{id, jdbcType = NUMERIC}
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Long">
+  	 DELETE FROM <include refid="TABLE_NAME" /> WHERE ID = #{id, jdbcType = NUMERIC}
+  </delete>
+
+	<delete id="deleteByTemplateId" parameterType="java.lang.Long">
+		DELETE FROM <include refid="TABLE_NAME" /> WHERE TEMPLATE_ID = #{templateId, jdbcType = NUMERIC}
+	</delete>
+  
+  <insert id="insert" databaseId="oracle" parameterType="com.tempetek.data.config.template.entity.TemplateAttrInfo">
+  	 <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+  	 	<include refid="_PUBLIC_V.SELECT_KEY" />
+	 </selectKey>
+	 <include refid="INSERT_SQL" />
+  </insert>
+  
+  <insert id="insert" databaseId="mysql" parameterType="com.tempetek.data.config.template.entity.TemplateAttrInfo">
+  	 <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+  	 	<include refid="_PUBLIC_V.SELECT_KEY" />
+	 </selectKey>
+	 <include refid="INSERT_SQL" />
+  </insert>
+  
+  <insert id="insert" databaseId="sqlserver" parameterType="com.tempetek.data.config.template.entity.TemplateAttrInfo">
+  	 <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+  	 	<include refid="_PUBLIC_V.SELECT_KEY" />
+	 </selectKey>
+	 <include refid="INSERT_SQL" />
+  </insert>
+  
+  <update id="update" parameterType="com.tempetek.data.config.template.entity.TemplateAttrInfo">
+     UPDATE <include refid="TABLE_NAME" />
+	 <set>
+		TEMPLATE_ID = #{templateId, jdbcType = NUMERIC},		
+		FIELD_NAME = #{fieldName, jdbcType = VARCHAR},		
+		FIELD_COMMENT = #{fieldComment, jdbcType = VARCHAR}		
+	 </set>
+	 WHERE ID = #{id, jdbcType = NUMERIC}
+  </update>
+  
+  <select id="findByCondition" resultMap="templateAttrInfoResultMap" parameterType="com.tempetek.data.config.template.entity.TemplateAttrInfo">
+     SELECT * FROM <include refid="TABLE_NAME" /> <include refid="SELECT_CONDITION" />
+  </select>
+  
+  <select id="selectPager" resultMap="templateAttrInfoResultMap">
+  	 <include refid="_PUBLIC_V.PAGER_BEFORE" />
+	 SELECT * FROM <include refid="TABLE_NAME" />
+  	 <include refid="PAGER_CONDITION" />
+  	 ORDER BY ${pageOrder}
+	 <include refid="_PUBLIC_V.PAGER_AFTER" />
+  </select>
+	
+  <select id="countPager" resultType="long">
+	 SELECT COUNT(1) FROM <include refid="TABLE_NAME" /> <include refid="PAGER_CONDITION" />
+  </select>
+  
+  <delete id="deleteByIds" parameterType="java.lang.Long">
+  	 DELETE FROM <include refid="TABLE_NAME" /> WHERE ID IN
+  	 <foreach item="item" collection="array" open="(" separator="," close=")">
+  	 	#{item}
+  	 </foreach>
+  </delete>
+  
+</mapper>

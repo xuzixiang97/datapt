@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>坦佩信息管理系统</title>
+    <link rel="icon" type="image/x-icon" href="${rc.contextPath}/assets/image/system-title.ico" />
+    <link rel="stylesheet" type="text/css" href="${rc.contextPath}/assets/js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="${rc.contextPath}/assets/js/easyui/themes/default/color.css">
+	<link rel="stylesheet" type="text/css" href="${rc.contextPath}/assets/js/easyui/themes/default/iconfont/iconfont.css">
+	<link rel="stylesheet" type="text/css" href="${rc.contextPath}/assets/css/common.css">
+	<script type="text/javascript" src="${rc.contextPath}/assets/js/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="${rc.contextPath}/assets/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${rc.contextPath}/assets/js/easyui/jquery.easyui.dialog.js"></script>
+    <script type="text/javascript" src="${rc.contextPath}/assets/js/easyui/jquery.easyui.validator.js"></script>
+    <script type="text/javascript" src="${rc.contextPath}/assets/js/easyui/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="${rc.contextPath}/assets/js/work/jquery.common.js"></script>
+    <script type="text/javascript" src="${rc.contextPath}/assets/js/echarts/echarts.min.js"></script>

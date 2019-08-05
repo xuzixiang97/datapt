@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tempetek.data.config.template.entity.TemplateInfo">
+
+  <resultMap id="templateInfoResultMap" type="com.tempetek.data.config.template.entity.TemplateInfo">
+  	 <result property="id" column="ID" />
+	 <result property="code" column="CODE" />
+	 <result property="name" column="NAME" />
+	 <result property="creator" column="CREATOR" />
+	 <result property="createTime" column="CREATE_TIME" />
+	 <result property="modifier" column="MODIFIER" />
+	 <result property="modifiedTime" column="MODIFIED_TIME" />
+	 <result property="description" column="DESCRIPTION" />
+	 <result property="type" column="TYPE" />
+  </resultMap>
+  
+  <sql id="TABLE_NAME">US_DATA_TEMPLATE</sql>
+  
+  <sql id="PAGER_CONDITION">
+  	 <where>
+ 		<if test="condition.code!=null and condition.code!=''">
+   	    	AND CODE = #{condition.code, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.name!=null and condition.name!=''">
+   	    	AND NAME = #{condition.name, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.creator!=null and condition.creator!=''">
+   	    	AND CREATOR = #{condition.creator, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.createTime!=null and condition.createTime!=''">
+   	    	AND CREATE_TIME = #{condition.createTime, jdbcType = TIMESTAMP}
+    	</if>
+  
+  		<if test="condition.modifier!=null and condition.modifier!=''">
+   	    	AND MODIFIER = #{condition.modifier, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.modifiedTime!=null and condition.modifiedTime!=''">
+   	    	AND MODIFIED_TIME = #{condition.modifiedTime, jdbcType = TIMESTAMP}
+    	</if>
+  
+  		<if test="condition.description!=null and condition.description!=''">
+   	    	AND DESCRIPTION = #{condition.description, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.type!=null and condition.type!=''">
+   	    	AND TYPE = #{condition.type, jdbcType = VARCHAR}
+    	</if>
+ 	 </where>
+  </sql>
+  
+  <sql id="SELECT_CONDITION">
+  	 <where>
+ 		<if test="code!=null and code!=''">
+   	    	AND CODE = #{code, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="name!=null and name!=''">
+   	    	AND NAME = #{name, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="creator!=null and creator!=''">
+   	    	AND CREATOR = #{creator, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="createTime!=null and createTime!=''">
+   	    	AND CREATE_TIME = #{createTime, jdbcType = TIMESTAMP}
+    	</if>
+  
+  		<if test="modifier!=null and modifier!=''">
+   	    	AND MODIFIER = #{modifier, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="modifiedTime!=null and modifiedTime!=''">
+   	    	AND MODIFIED_TIME = #{modifiedTime, jdbcType = TIMESTAMP}
+    	</if>
+  
+  		<if test="description!=null and description!=''">
+   	    	AND DESCRIPTION = #{description, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="type!=null and type!=''">
+   	    	AND TYPE = #{type, jdbcType = VARCHAR}
+    	</if>
+   	 </where>
+  </sql>
+  
+  <sql id="INSERT_SQL">
+	 INSERT INTO <include refid="TABLE_NAME" />(
+	 	ID,
+		CODE,		
+		NAME,		
+		CREATOR,		
+		CREATE_TIME,		
+		MODIFIER,		
+		MODIFIED_TIME,		
+		DESCRIPTION,		
+		TYPE		
+	 )
+	 VALUES(
+	 	#{id, jdbcType = NUMERIC},
+		#{code, jdbcType = VARCHAR},		
+		#{name, jdbcType = VARCHAR},		
+		#{creator, jdbcType = VARCHAR},		
+		#{createTime, jdbcType = TIMESTAMP},		
+		#{modifier, jdbcType = VARCHAR},		
+		#{modifiedTime, jdbcType = TIMESTAMP},		
+		#{description, jdbcType = VARCHAR},		
+		#{type, jdbcType = VARCHAR}		
+	 )
+  </sql>
+  
+  <select id="findById" resultMap="templateInfoResultMap" parameterType="java.lang.Long">
+     SELECT * FROM <include refid="TABLE_NAME" /> WHERE ID = #{id, jdbcType = NUMERIC}
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Long">
+  	 DELETE FROM <include refid="TABLE_NAME" /> WHERE ID = #{id, jdbcType = NUMERIC}
+  </delete>
+  
+  <insert id="insert" databaseId="oracle" parameterType="com.tempetek.data.config.template.entity.TemplateInfo">
+  	 <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+  	 	<include refid="_PUBLIC_V.SELECT_KEY" />
+	 </selectKey>
+	 <include refid="INSERT_SQL" />
+  </insert>
+  
+  <insert id="insert" databaseId="mysql" parameterType="com.tempetek.data.config.template.entity.TemplateInfo">
+  	 <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+  	 	<include refid="_PUBLIC_V.SELECT_KEY" />
+	 </selectKey>
+	 <include refid="INSERT_SQL" />
+  </insert>
+  
+  <insert id="insert" databaseId="sqlserver" parameterType="com.tempetek.data.config.template.entity.TemplateInfo">
+  	 <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+  	 	<include refid="_PUBLIC_V.SELECT_KEY" />
+	 </selectKey>
+	 <include refid="INSERT_SQL" />
+  </insert>
+  
+  <update id="update" parameterType="com.tempetek.data.config.template.entity.TemplateInfo">
+     UPDATE <include refid="TABLE_NAME" />
+	 <set>
+		CODE = #{code, jdbcType = VARCHAR},		
+		NAME = #{name, jdbcType = VARCHAR},		
+		CREATOR = #{creator, jdbcType = VARCHAR},		
+		CREATE_TIME = #{createTime, jdbcType = TIMESTAMP},		
+		MODIFIER = #{modifier, jdbcType = VARCHAR},		
+		MODIFIED_TIME = #{modifiedTime, jdbcType = TIMESTAMP},		
+		DESCRIPTION = #{description, jdbcType = VARCHAR},		
+		TYPE = #{type, jdbcType = VARCHAR}		
+	 </set>
+	 WHERE ID = #{id, jdbcType = NUMERIC}
+  </update>
+
+	<select id="findByCode" resultMap="templateInfoResultMap" parameterType="java.lang.String">
+		SELECT * FROM <include refid="TABLE_NAME" /> WHERE CODE = #{code, jdbcType = VARCHAR}
+	</select>
+  
+  <select id="findByCondition" resultMap="templateInfoResultMap" parameterType="com.tempetek.data.config.template.entity.TemplateInfo">
+     SELECT * FROM <include refid="TABLE_NAME" /> <include refid="SELECT_CONDITION" />
+  </select>
+  
+  <select id="selectPager" resultMap="templateInfoResultMap">
+  	 <include refid="_PUBLIC_V.PAGER_BEFORE" />
+	 SELECT * FROM <include refid="TABLE_NAME" />
+  	 <include refid="PAGER_CONDITION" />
+  	 ORDER BY ${pageOrder}
+	 <include refid="_PUBLIC_V.PAGER_AFTER" />
+  </select>
+	
+  <select id="countPager" resultType="long">
+	 SELECT COUNT(1) FROM <include refid="TABLE_NAME" /> <include refid="PAGER_CONDITION" />
+  </select>
+  
+  <delete id="deleteByIds" parameterType="java.lang.Long">
+  	 DELETE FROM <include refid="TABLE_NAME" /> WHERE ID IN
+  	 <foreach item="item" collection="array" open="(" separator="," close=")">
+  	 	#{item}
+  	 </foreach>
+  </delete>
+  
+</mapper>

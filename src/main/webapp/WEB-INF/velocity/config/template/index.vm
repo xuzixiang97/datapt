@@ -1,0 +1,74 @@
+#parse("header.vm")
+</head>
+
+<body class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'center',border:false">
+		<form id="jspopForm" method="post" action="${rc.contextPath}/config/template/save">
+			<input type="hidden" id="id" name="id" value="$!{templateInfo.id}">
+			
+			<table style="width:100%">
+				<tr height="10px"></tr>
+				
+				<tr height="40px">
+					<td align="right">
+						<label class="textbox-label" style="text-align:right">模板编号:</label>
+					</td>
+					<td>
+						<input class="easyui-textbox" name="code" value="$!{templateInfo.code}" style="width:171px" data-options="required:true,missingMessage:'模板编号不能为空!',validType:['unique[\'${rc.contextPath}/config/template/isUnique\',\'code\',\'id\']','length[0,32]'],invalidMessage:'编号不能重复且长度不能大于32!'" >
+					</td>
+
+				</tr>
+
+                <tr height="40px">
+                    <td align="right">
+                        <label class="textbox-label" style="text-align:right">模板名称:</label>
+                    </td>
+                    <td>
+                        <input class="easyui-textbox" name="name" value="$!{templateInfo.name}" style="width:171px" data-options="required:true,missingMessage:'模板名称不能为空!',validType:'length[0,32]',invalidMessage:'模板名称长度不能大于32!'" >
+                    </td>
+                </tr>
+
+
+                <tr height="40px">
+                    <td align="right">
+                        <label class="textbox-label" style="text-align:right">模板类型:</label>
+                    </td>
+                    <td>
+                        <input class="easyui-textbox" name="type" value="$!{templateInfo.type}" style="width:171px" data-options="required:true,missingMessage:'模板类型不能为空!',validType:'length[0,2]',invalidMessage:'模板类型长度不能大于2!'" >
+                    </td>
+                </tr>
+
+                <tr height="80px">
+                    <td align="right">
+                        <label class="textbox-label" style="text-align:right">备注信息:</label>
+                    </td>
+                    <td colspan="3">
+                        <input class="easyui-textbox" name="description" value="$!{templateInfo.description}" style="height:80px;width:500px;" data-options="multiline:true, validType:'length[0,256]',invalidMessage:'备注长度不能大于256!'" >
+                    </td>
+                </tr>
+			</table>
+	    </form>
+	</div>
+</body>
+
+<script type="text/javascript">
+
+	function jspop_save() {
+		$("#jspopForm").form('submit', {
+			success: function(o) {
+				var data = jQuery.parseJSON(o);
+				
+				if (data.status == "success") {
+					$("input[name=id]").val(data.data);
+					$.messager.alert('提示', data.message, 'info', function() {
+                        parent.location.reload();
+                        jspop_dialog_close("jspop_dialog");
+					});
+				} else {
+					$.messager.alert('提示', data.message, 'error');
+				}
+			}
+		});
+	}
+</script>
+</html>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tempetek.data.collect.cycle.entity.CycleInfo">
+
+  <resultMap id="cycleInfoResultMap" type="com.tempetek.data.collect.cycle.entity.CycleInfo">
+  	 <result property="id" column="ID" />
+	 <result property="validateId" column="VALIDATE_ID" />
+	 <result property="timeType" column="TIME_TYPE" />
+	 <result property="startTime" column="START_TIME" />
+	 <result property="endTime" column="END_TIME" />
+	 <result property="isEnable" column="IS_ENABLE" />
+	 <result property="creator" column="CREATOR" />
+	 <result property="createTime" column="CREATE_TIME" />
+	 <result property="modifier" column="MODIFIER" />
+	 <result property="modifiedTime" column="MODIFIED_TIME" />
+	 <result property="description" column="DESCRIPTION" />
+  </resultMap>
+  
+  <sql id="TABLE_NAME">US_DATA_CYCLE</sql>
+  
+  <sql id="PAGER_CONDITION">
+  	 <where>
+ 		<if test="condition.validateId!=null and condition.validateId!=''">
+   	    	AND VALIDATE_ID = #{condition.validateId, jdbcType = NUMERIC}
+    	</if>
+  
+  		<if test="condition.timeType!=null and condition.timeType!=''">
+   	    	AND TIME_TYPE = #{condition.timeType, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.startTime!=null and condition.startTime!=''">
+   	    	AND START_TIME = #{condition.startTime, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.endTime!=null and condition.endTime!=''">
+   	    	AND END_TIME = #{condition.endTime, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.isEnable!=null and condition.isEnable!=''">
+   	    	AND IS_ENABLE = #{condition.isEnable, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.creator!=null and condition.creator!=''">
+   	    	AND CREATOR = #{condition.creator, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.createTime!=null and condition.createTime!=''">
+   	    	AND CREATE_TIME = #{condition.createTime, jdbcType = TIMESTAMP}
+    	</if>
+  
+  		<if test="condition.modifier!=null and condition.modifier!=''">
+   	    	AND MODIFIER = #{condition.modifier, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="condition.modifiedTime!=null and condition.modifiedTime!=''">
+   	    	AND MODIFIED_TIME = #{condition.modifiedTime, jdbcType = TIMESTAMP}
+    	</if>
+  
+  		<if test="condition.description!=null and condition.description!=''">
+   	    	AND DESCRIPTION = #{condition.description, jdbcType = VARCHAR}
+    	</if>
+ 	 </where>
+  </sql>
+  
+  <sql id="SELECT_CONDITION">
+  	 <where>
+ 		<if test="validateId!=null and validateId!=''">
+   	    	AND VALIDATE_ID = #{validateId, jdbcType = NUMERIC}
+    	</if>
+  
+  		<if test="timeType!=null and timeType!=''">
+   	    	AND TIME_TYPE = #{timeType, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="startTime!=null and startTime!=''">
+   	    	AND START_TIME = #{startTime, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="endTime!=null and endTime!=''">
+   	    	AND END_TIME = #{endTime, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="isEnable!=null and isEnable!=''">
+   	    	AND IS_ENABLE = #{isEnable, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="creator!=null and creator!=''">
+   	    	AND CREATOR = #{creator, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="createTime!=null and createTime!=''">
+   	    	AND CREATE_TIME = #{createTime, jdbcType = TIMESTAMP}
+    	</if>
+  
+  		<if test="modifier!=null and modifier!=''">
+   	    	AND MODIFIER = #{modifier, jdbcType = VARCHAR}
+    	</if>
+  
+  		<if test="modifiedTime!=null and modifiedTime!=''">
+   	    	AND MODIFIED_TIME = #{modifiedTime, jdbcType = TIMESTAMP}
+    	</if>
+  
+  		<if test="description!=null and description!=''">
+   	    	AND DESCRIPTION = #{description, jdbcType = VARCHAR}
+    	</if>
+   	 </where>
+  </sql>
+  
+  <sql id="INSERT_SQL">
+	 INSERT INTO <include refid="TABLE_NAME" />(
+	 	ID,
+		VALIDATE_ID,		
+		TIME_TYPE,		
+		START_TIME,		
+		END_TIME,		
+		IS_ENABLE,		
+		CREATOR,		
+		CREATE_TIME,		
+		MODIFIER,		
+		MODIFIED_TIME,		
+		DESCRIPTION		
+	 )
+	 VALUES(
+	 	#{id, jdbcType = NUMERIC},
+		#{validateId, jdbcType = NUMERIC},		
+		#{timeType, jdbcType = VARCHAR},		
+		#{startTime, jdbcType = VARCHAR},		
+		#{endTime, jdbcType = VARCHAR},		
+		#{isEnable, jdbcType = VARCHAR},		
+		#{creator, jdbcType = VARCHAR},		
+		#{createTime, jdbcType = TIMESTAMP},		
+		#{modifier, jdbcType = VARCHAR},		
+		#{modifiedTime, jdbcType = TIMESTAMP},		
+		#{description, jdbcType = VARCHAR}		
+	 )
+  </sql>
+  
+  <select id="findById" resultMap="cycleInfoResultMap" parameterType="java.lang.Long">
+     SELECT * FROM <include refid="TABLE_NAME" /> WHERE ID = #{id, jdbcType = NUMERIC}
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Long">
+  	 DELETE FROM <include refid="TABLE_NAME" /> WHERE ID = #{id, jdbcType = NUMERIC}
+  </delete>
+  
+  <insert id="insert" databaseId="oracle" parameterType="com.tempetek.data.collect.cycle.entity.CycleInfo">
+  	 <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+  	 	<include refid="_PUBLIC_V.SELECT_KEY" />
+	 </selectKey>
+	 <include refid="INSERT_SQL" />
+  </insert>
+  
+  <insert id="insert" databaseId="mysql" parameterType="com.tempetek.data.collect.cycle.entity.CycleInfo">
+  	 <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+  	 	<include refid="_PUBLIC_V.SELECT_KEY" />
+	 </selectKey>
+	 <include refid="INSERT_SQL" />
+  </insert>
+  
+  <insert id="insert" databaseId="sqlserver" parameterType="com.tempetek.data.collect.cycle.entity.CycleInfo">
+  	 <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+  	 	<include refid="_PUBLIC_V.SELECT_KEY" />
+	 </selectKey>
+	 <include refid="INSERT_SQL" />
+  </insert>
+  
+  <update id="update" parameterType="com.tempetek.data.collect.cycle.entity.CycleInfo">
+     UPDATE <include refid="TABLE_NAME" />
+	 <set>
+		VALIDATE_ID = #{validateId, jdbcType = NUMERIC},		
+		TIME_TYPE = #{timeType, jdbcType = VARCHAR},		
+		START_TIME = #{startTime, jdbcType = VARCHAR},		
+		END_TIME = #{endTime, jdbcType = VARCHAR},		
+		IS_ENABLE = #{isEnable, jdbcType = VARCHAR},		
+		CREATOR = #{creator, jdbcType = VARCHAR},		
+		CREATE_TIME = #{createTime, jdbcType = TIMESTAMP},		
+		MODIFIER = #{modifier, jdbcType = VARCHAR},		
+		MODIFIED_TIME = #{modifiedTime, jdbcType = TIMESTAMP},		
+		DESCRIPTION = #{description, jdbcType = VARCHAR}		
+	 </set>
+	 WHERE ID = #{id, jdbcType = NUMERIC}
+  </update>
+  
+  <select id="findByCondition" resultMap="cycleInfoResultMap" parameterType="com.tempetek.data.collect.cycle.entity.CycleInfo">
+     SELECT * FROM <include refid="TABLE_NAME" /> <include refid="SELECT_CONDITION" />
+  </select>
+  
+  <select id="selectPager" resultMap="cycleInfoResultMap">
+  	 <include refid="_PUBLIC_V.PAGER_BEFORE" />
+	 SELECT * FROM <include refid="TABLE_NAME" />
+  	 <include refid="PAGER_CONDITION" />
+  	 ORDER BY ${pageOrder}
+	 <include refid="_PUBLIC_V.PAGER_AFTER" />
+  </select>
+	
+  <select id="countPager" resultType="long">
+	 SELECT COUNT(1) FROM <include refid="TABLE_NAME" /> <include refid="PAGER_CONDITION" />
+  </select>
+  
+  <delete id="deleteByIds" parameterType="java.lang.Long">
+  	 DELETE FROM <include refid="TABLE_NAME" /> WHERE ID IN
+  	 <foreach item="item" collection="array" open="(" separator="," close=")">
+  	 	#{item}
+  	 </foreach>
+  </delete>
+  
+</mapper>

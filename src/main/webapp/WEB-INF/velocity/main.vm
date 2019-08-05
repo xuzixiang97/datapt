@@ -1,0 +1,75 @@
+#parse("header.vm")
+</head>
+
+<body class="easyui-layout" data-options="fit:true">
+	<div class="system-head" data-options="region:'north',border:false">
+		<img src="${rc.contextPath}/assets/image/system-head.png"/>
+		<div style="width:100%;height:25px;position:absolute;top:20px;float:right">
+			<label style="position:absolute;top:6px;right:175px">在线人数：<font color="green">$!{online}人</font>&nbsp;&nbsp;&nbsp;&nbsp;欢迎您, $!{name}</label>
+			<a href="${rc.contextPath}/platform/main" target="_blank" class="easyui-linkbutton" data-options="iconCls:'iconfont icon-set #333333',plain:true" style="position:absolute;top:1px;right:140px"></a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'iconfont icon-lock',plain:true" style="position:absolute;top:1px;right:60px" onclick="editpwd($!{userid});">修改密码</a>
+			<a href="${rc.contextPath}/logout" class="easyui-linkbutton" data-options="iconCls:'iconfont icon-logout',plain:true" style="position:absolute;top:1px;right:5px">退出</a>
+		</div>
+	</div>
+
+	<div data-options="region:'center',border:false">
+		<div id="main_panel" class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'west'" style="width:250px">
+				<div id='navigation' class="easyui-accordion" data-options="fit:true,border:false">
+				</div>
+			</div>
+
+			<div data-options="region:'center',border:false" style="overflow:hidden">
+				<iframe id="_main_frame" height="100%" width="100%" style="frameborder:0;allowtransparency:true;border:none"></iframe>
+			</div>
+		</div>
+	</div>
+
+	#parse("footer.vm")
+</body>
+
+<script type="text/javascript">
+	$(function(){
+		$.each(${menuList}, function(i, n) {
+        	$('#navigation').accordion('add', {
+            	title:n.text,
+            	iconCls:n.iconCls,
+            	selected:(i==0)?true:false,
+            	content:'<div style="padding:10px"><ul name="'+ n.text+'" code = "' + n.attribute.code + '"></ul></div>'
+        	});
+
+        	$("ul[code='" + n.attribute.code + "']").tree({
+                data:n.children,
+                animate:true,
+                onClick:function(node){
+                	loadFrame(node);
+                },
+                onLoadSuccess:function(node, data){
+            		var n = $(this).tree('find', data[0].id);
+                	$(this).tree('select', n.target);
+                }
+            });
+		});
+	});
+
+	$('#navigation').accordion({
+        onSelect:function (title,index) {
+            var obj = $(this).accordion("getSelected");
+          	var code = obj.find("div ul").attr("code");
+            var node = $("ul[code='" + code + "']").tree("getSelected");
+        	loadFrame(node);
+        }
+    });
+
+	function editpwd(userid){
+		jspop_dialog("jspop_dialog", "修改密码", "${rc.contextPath}/platform/auth/user/editpwd?id=" + userid, 350, 250, null, true, true);
+	}
+
+	function loadFrame(o){
+		if(o&&o.attribute.linkUrl){
+			var frame = document.getElementById("_main_frame");
+	        frame.src = "${rc.contextPath}" + o.attribute.linkUrl + "?code=" + o.attribute.code + "&title=" + o.text;
+		}
+	}
+</script>
+</html>

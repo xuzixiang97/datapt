@@ -1,0 +1,110 @@
+#parse("header.vm")
+</head>
+
+<body class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'center',border:false">
+		<form id="jspopForm" method="post" action="${rc.contextPath}/collect/cycle/save">
+			<input type="hidden" name="id" value="$!{cycleInfo.id}">
+			
+			<table style="width:100%">
+				<tr height="10px"></tr>
+				
+				<tr height="40px">
+					<td align="right">
+						<label class="textbox-label" style="text-align:right">自检ID:</label>
+					</td>
+					<td>
+						#combox_common('validateId', 'validateId', '2', $!{validateInfoList}, $!{cycleInfo.validateId}, '', '自检不能为空!', '自检不正确!')
+					</td>
+                    <td align="right">
+                        <label class="textbox-label" style="text-align:right">时间类型:</label>
+                    </td>
+                    <td>
+						#combox_dictionary ( 'timeType',  'timeType',  '2',  'US_DATA_CYCLE_TIME_TYPE',  $!{cycleInfo.timeType},  '',  '类型不能为空!',  '类型不正确!' )
+                    </td>
+				</tr>
+
+                <tr height="40px">
+					<td align="right">
+						<label class="textbox-label" style="text-align:right">开始时间:</label>
+					</td>
+					<td>
+						<input id="startTime" name="startTime" value="$!{cycleInfo.startTime}" style="width:171px" data-options="required:true,missingMessage:'开始时间不能为空!'" >
+					</td>
+                    <td align="right">
+                        <label class="textbox-label" style="text-align:right">结束时间:</label>
+                    </td>
+                    <td>
+                        <input id="endTime" name="endTime" value="$!{cycleInfo.endTime}" style="width:171px" data-options="required:true,missingMessage:'结束时间不能为空!',validType:'TimeCheck[\'startTime\']',invalidMessage:'开始时间不能大于结束时间!'" >
+                    </td>
+				</tr>
+
+				<tr height="40px">
+					<td align="right">
+						<label class="textbox-label" style="text-align:right">是否启用:</label>
+					</td>
+					<td>
+						#combox_dictionary ( 'isEnable',  'isEnable',  '2',  'TP_PARAM_USED',  $!{cycleInfo.isEnable},  '',  '是否启用不能为空!',  '是否启用不正确!' )
+					</td>
+				</tr>
+
+                <tr height="80px">
+                    <td align="right">
+                        <label class="textbox-label" style="text-align:right">备注信息:</label>
+                    </td>
+                    <td colspan="3">
+                        <input class="easyui-textbox" name="description" value="$!{cycleInfo.description}" style="height:80px;width:500px;" data-options="multiline:true, validType:'length[0,256]',invalidMessage:'备注长度不能大于256!'" >
+                    </td>
+                </tr>
+			</table>
+	    </form>
+	</div>
+</body>
+
+<script type="text/javascript">
+    $('#timeType').combobox({
+        onSelect: function (record) {
+            if (record.code == "1"){
+                $('#startTime').timespinner({
+                    required:true
+                });
+                $('#endTime').timespinner({
+                    required:true
+                });
+			}else if (record.code == "2"){
+                $('#startTime').datebox({
+                    required:true
+                });
+                $('#endTime').datebox({
+                    required:true
+                });
+            }else{
+                $('#startTime').datebox({
+                    required:false
+                });
+                $('#endTime').datebox({
+                    required:false
+                });
+			}
+		}
+    });
+
+	function jspop_save() {
+		$("#jspopForm").form('submit', {
+			success: function(o) {
+				var data = jQuery.parseJSON(o);
+				
+				if (data.status == "success") {
+					$("input[name=id]").val(data.data);
+					$.messager.alert('提示', data.message, 'info', function() {
+						jspop_dialog_close("jspop_dialog");
+					});
+				} else {
+					$.messager.alert('提示', data.message, 'error');
+				}
+			}
+		});
+	}
+
+</script>
+</html>

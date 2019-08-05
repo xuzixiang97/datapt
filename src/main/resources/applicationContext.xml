@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+                        http://www.springframework.org/schema/context  
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+
+
+
+
+                        http://www.springframework.org/schema/tx 
+            			http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+
+
+                        http://www.springframework.org/schema/aop  
+                        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+          
+    <!-- 获取Bean实例化对象 -->              
+    <bean id="springContextHandler" class="com.tempetek.orm.spring.SpringContextHandler"></bean>
+	<!-- 自动扫描 -->
+	<context:annotation-config />
+	<!-- 扫描所需的包 -->
+	<context:component-scan base-package="com.tempetek.data.**,com.tempetek.platform.**,com.tempetek.annotation.**,com.tempetek.cache.**,com.tempetek.safety.**" />
+	<!-- 启用日志注解 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	
+	<bean id="authenManager" class="com.tempetek.safety.manager.impl.AuthenWebManager" >
+		<!-- 登录地址,未登录时跳到该地址 -->
+		<property name="loginUrl" value="/login" />
+		<!-- 加密策略：MD5、BASE64、SHA、CRC32 -->
+		<property name="encrypt" value="MD5" />
+		<!-- 允许访问用户 -->
+		<!-- <property name="allow">
+			<list>
+				<value>TP0001</value>
+				<value>admin</value>
+			</list>
+		</property> -->
+		<!-- 禁止访问用户 -->
+		<!-- <property name="forbid">
+			<list>
+				<value>TP0001</value>
+				<value>admin</value>
+			</list>
+		</property> -->
+	</bean>
+	
+    <!-- 事务管理 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" p:dataSource-ref="multipleDataSource" />
+	
+	<!-- 事务注解 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+	
+	<!-- 数据库连接配置 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<property name="maxActive" value="${jdbc.maxActive}" />
+	</bean>
+	
+	<bean id="multipleDataSource" class="com.tempetek.orm.datasource.MultipleDataSource">
+        <property name="targetDataSources">
+            <map>
+                <entry key="dataSource" value-ref="dataSource" />
+            </map>
+        </property>
+        <!-- 默认数据源 -->
+        <property name="defaultTargetDataSource" ref="dataSource" />
+    </bean>
+	
+	<bean id="databaseIdProvider" class="com.tempetek.orm.provider.DefaultDatabaseIdProvider" />
+		
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="multipleDataSource" />
+		<property name="databaseIdProvider" ref="databaseIdProvider" />
+		<property name="mapperLocations" value="classpath*:com/tempetek/**/**/mapper/*Mapper.xml" />
+	</bean>
+	
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+    
+	<!-- 开发模式配置 -->
+	<beans profile="dev">
+		<context:property-placeholder location="classpath:log4j.properties,classpath:dev/config-dev.properties,classpath:dictionary.properties" ignore-unresolvable="true" />
+		<import resource="classpath:spring-mvc.xml"/>
+		<import resource="classpath:spring-init.xml"/>
+	</beans>
+	
+	<beans profile="production">
+		<context:property-placeholder location="classpath:log4j.properties,classpath:production/config.properties,classpath:dictionary.properties" ignore-unresolvable="true" />
+		<import resource="classpath:spring-mvc.xml"/>
+		<import resource="classpath:spring-init.xml"/>
+	</beans>
+</beans>

@@ -1,0 +1,114 @@
+#parse("header.vm")
+</head>
+
+<body class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'north',border:false">
+		<form id="queryForm">
+			<table style="width:100%">
+				<tr height="15px"></tr>
+
+                <tr height="40px">
+					<td>
+						<label class="textbox-label" style="text-align:right">自检名:</label>
+						#combox_common('validateId', 'validateId', '1', $!{validateInfoList}, $!{cycleInfo.validateId}, '', '自检不能为空!', '自检不正确!')
+						<label class="textbox-label" style="text-align:right">时间类型:</label>
+						#combox_dictionary ( 'timeType',  'timeType',  '1',  'US_DATA_CYCLE_TIME_TYPE',  $!{cycleInfo.timeType},  '',  '类型不能为空!',  '类型不正确!' )
+                        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'iconfont icon-search'" style="position:absolute;right:90px" onclick="callback()">查询</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'iconfont icon-reset'" style="position:absolute;right:20px" onclick="reset()">重置</a>
+                    </td>
+				</tr>
+
+                <tr height="15px"></tr>
+			</table>
+		</form>
+	</div>
+	
+	<div data-options="region:'center',border:false">
+		#button_common("btnToolBar", "panel-datagrid-header datagrid-toolbar1", $!{code}, 'IN[CYCLE_ADD,CYCLE_EDIT,CYCLE_DEL]')
+		<table id="loadGridList"></table>
+    </div>
+</body>
+
+<script type="text/javascript">
+	var grid = $('#loadGridList').datagrid({
+		url: '${rc.contextPath}/collect/cycle/list',
+		border: false,
+		remoteSort: true,
+		pagination: true,
+		rownumbers: true,
+		fit: true,
+		fitColumns: true,
+		columns: [[
+			{field: 'ck', title: '全选', width: 50, checkbox: true},
+	        {field: 'validateStr', title: '自检名', width: 200, halign: 'center', align: 'center'},
+            {field: 'timeTypeStr', title: '时间类型', width: 200, halign: 'center', align: 'center'},
+            {field: 'startTime', title: '开始时间', width: 200, halign: 'center', align: 'center'},
+            {field: 'endTime', title: '结束时间', width: 200, halign: 'center', align: 'center'},
+            {field: 'isEnableStr', title: '是否启用', width: 100, halign: 'center', align: 'center'},
+            {field: 'description', title: '备注', width: 300, halign: 'center', align: 'center'}
+  		]],
+		pageSize: 20,
+		pageList: [10, 20, 30, 50, 100],
+		sortName: 'ID',
+		sortOrder: 'DESC'
+	});
+	
+	function callback() {
+		if ($("#queryForm").form('validate')) {
+			grid.datagrid("load", $("#queryForm").serializeObject());
+		}
+		return false;
+	}
+	
+	function reset() {
+		$("#queryForm").form("reset");
+	}
+	
+	function add() {
+		jspop_dialog("jspop_dialog", "新增", "${rc.contextPath}/collect/cycle/index", 650, 400, callback, true, true);
+	}
+	
+	function edit() {
+		var rows = grid.datagrid('getSelections');
+		
+		if (rows.length > 1 || rows.length == 0) {
+			$.messager.alert('提示', '请选择一条采集周期!', 'error');
+			return;
+		}
+		jspop_dialog("jspop_dialog", "修改", "${rc.contextPath}/collect/cycle/index?id=" + rows[0].id, 650, 400, callback, true, true);
+	}
+	
+	function del() {
+		var ids_ = [];
+		var rows = grid.datagrid('getSelections');
+		
+		if (rows.length == 0) {
+			$.messager.alert('提示', '请选择至少一条采集周期!', 'error');
+			return;
+		}
+		
+		$.messager.confirm('提示', '是否确定删除?', function(o) {
+			if (o) {
+				for (var i = 0; i < rows.length; i++) {
+					ids_.push(rows[i].id)
+				}
+				
+				$.ajax({
+					type: "post",
+					dataType: "json",
+					url: "${rc.contextPath}/collect/cycle/delete",
+					data: {ids: ids_.join(',')},
+					success: function(o) {
+						if (o.status == "success") {
+							$.messager.alert('提示', o.message, 'info');
+							callback();
+						} else {
+							$.messager.alert('提示', o.message, 'error');
+						}
+					}
+				});
+			}
+		});
+	}
+</script>
+</html>

@@ -1,0 +1,52 @@
+.nav-box{
+    width: 220px!important;
+    height: 100%;
+    border: none;
+    border-right: 2px solid #c4ddff;
+}
+.nav-box .tree-hit{
+    display: none;
+}
+.nav-tree>li{
+    border-bottom: 1px solid #eee;
+
+}
+.nav-tree>li>div{
+    height: 40px!important;
+    line-height: 40px!important;
+    padding-left: 20px;
+}
+.nav-tree>li>ul{
+    background: #f7f7f7;
+}
+.nav-tree>li>div >.tree-title {
+    height: 40px!important;
+    line-height: 40px!important;
+    font: 14px 微软雅黑;
+}
+.nav-tree>li>div >.tree-icon{
+    vertical-align: middle;
+    margin-top: -3px;
+}
+.nav-tree>li>ul>li>div{
+    height: 32px!important;
+    line-height: 32px!important;
+    padding-left: 20px;
+}
+ .nav-tree>li>ul>li>div>.tree-title{
+    height: 32px!important;
+    line-height: 32px!important;
+     font: 14px 微软雅黑;
+}
+.nav-tree>li>ul>li>div>.tree-icon{
+    display: none;
+}
+
+.nav-tree>li>ul>li  .tree-node-selected{
+    background: #006cff;
+    color: white!important;
+}
+.nav-tree>li  .tree-node-selected{
+    color: #006cff;
+    background: #fff;
+}

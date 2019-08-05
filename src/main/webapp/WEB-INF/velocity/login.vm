@@ -1,0 +1,110 @@
+#parse("header.vm")
+</head>
+
+<body>
+	<div align="center" style="padding-top:18%">
+		<div class="easyui-panel" title="系统登录" style="width:100%;max-width:400px">
+			<form id="loginForm" method="post" action="${rc.contextPath}/platform/login">
+				<input type="hidden" name="directPath" value="${rc.contextPath}/main" >
+				
+			    <table style="width:100%">
+			    	<tr height="10px"></tr>
+			    	
+			    	<tr height="40px">
+			    		<td align="right">
+			    			<label class="textbox-label">用户名:</label>
+			    		</td>
+			    		<td colspan="2">
+			    			<input class="easyui-textbox" name="userName" style="width:171px" data-options="required:true,missingMessage:'用户名不能为空!',validType:'length[0,32]',invalidMessage:'用户名长度不能大于32!'" >
+			    		</td>
+			    	</tr>
+			    	
+			    	<tr height="40px">
+			    		<td align="right">
+			    			<label class="textbox-label">密&nbsp;&nbsp;&nbsp;码:</label>
+			    		</td>
+			    		<td colspan="2">
+			    			<input class="easyui-passwordbox" name="passWord" style="width:171px" data-options="required:true,missingMessage:'密码不能为空!',validType:'length[0,10]',invalidMessage:'密码长度不能大于10!'">
+			    		</td>
+			    	</tr>
+			    	
+			    	<tr height="40px">
+			    		<td align="right">
+			    			<label class="textbox-label">登录方式:</label>
+			    		</td>
+			    		<td colspan="2">
+			    			#radio_dictionary('loginMode', 'loginMode', 'TP_LOGIN_MODE')
+			    		</td>
+			    	</tr>
+			    	
+			    	<tr height="40px">
+			    		<td style="width:35%" align="right">
+			    			<label class="textbox-label">验证码:</label>
+			    		</td>
+			    		<td style="width:10%" >
+			    			<img id="captchaObj" alt="验证码" src="${rc.contextPath}/platform/getCaptcha?number=4" onclick="modify()"/>
+			    		</td>
+			    		<td align="left">
+			    			<input class="easyui-textbox" name="captcha" style="width:65px;" data-options="required:true,missingMessage:'验证码不能为空!'"/>
+			    		</td>
+			    	</tr>
+			    	
+			    	<tr>
+			    		<td colspan="3" align="center">
+		                    <input name="remPassWord" type="checkbox" value="true">记住密码
+			    		</td>
+			    	</tr>
+			    </table>
+		    </form>
+		    
+		    <div style="text-align:center;padding:10px 0">
+				<a href="javascript:void(0)" class="easyui-linkbutton" id="login" onclick="login()" style="width:60px">登录</a>&nbsp;&nbsp;&nbsp;
+				<a href="javascript:void(0)" class="easyui-linkbutton" id="reset" onclick="reset()" style="width:60px">重置</a>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	function login(){
+		$('#loginForm').form('submit', {
+			success:function(o){
+				var data = jQuery.parseJSON(o);
+				
+				if(data.status=="success"){
+					window.open(data.message, '_top');
+				}else{
+					$.messager.alert('提示', data.message, 'error', function(){
+						$("#login").focus();
+					});
+				}
+			}
+		});
+	}
+	
+	function reset(){
+		$('#loginForm').form('clear');
+	}
+	
+	function modify(){
+		var captchaObj = $("#captchaObj");  
+        var src = captchaObj.attr("src");  
+        captchaObj.attr("src", captchaUrl(src));
+	}
+	
+	function captchaUrl(url){
+        var timestamp = (new Date()).valueOf();
+        var index = url.indexOf("?", url);
+        
+        if (index > 0) {
+            url = url.substring(0, index);
+        }
+        return url + "?timestamp=" + timestamp;
+	}
+	
+	if (window!=top){
+	    top.location.href = location.href;
+	}
+	
+</script>
+</html>
