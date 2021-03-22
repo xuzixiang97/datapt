@@ -59,7 +59,7 @@
 		<quartz.version>2.2.1</quartz.version>
 		<jsoup.version>1.9.2</jsoup.version>
 		<ueditor.version>1.1.2</ueditor.version>
-		<xstream.version>1.4.10</xstream.version>
+		<xstream.version>1.4.16</xstream.version>
 		<jldap.version>4.3</jldap.version>
 		<dwr.version>3.0.2-RELEASE</dwr.version>
 		<redis.version>2.9.0</redis.version>
