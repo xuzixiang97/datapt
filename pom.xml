@@ -53,7 +53,7 @@
 		<aspectjweaver.version>1.8.13</aspectjweaver.version>
 		<aspectjrt.version>1.8.12</aspectjrt.version>
 		<cglib.version>3.2.1</cglib.version>
-		<httpclient.version>4.5.2</httpclient.version>
+		<httpclient.version>4.5.13</httpclient.version>
 		<poi.version>3.9</poi.version>
 		<commons.net.version>3.6</commons.net.version>
 		<quartz.version>2.2.1</quartz.version>
