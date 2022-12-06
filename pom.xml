@@ -55,7 +55,7 @@
 		<cglib.version>3.2.1</cglib.version>
 		<httpclient.version>4.5.2</httpclient.version>
 		<poi.version>3.9</poi.version>
-		<commons.net.version>3.6</commons.net.version>
+		<commons.net.version>3.9.0</commons.net.version>
 		<quartz.version>2.2.1</quartz.version>
 		<jsoup.version>1.9.2</jsoup.version>
 		<ueditor.version>1.1.2</ueditor.version>
